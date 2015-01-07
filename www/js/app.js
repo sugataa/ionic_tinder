@@ -5,18 +5,18 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
 
-// .run(function($ionicPlatform) {
-//   $ionicPlatform.ready(function() {
-//     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-//     // for form inputs)
-//     if(window.cordova && window.cordova.plugins.Keyboard) {
-//       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-//     }
-//     if(window.StatusBar) {
-//       StatusBar.styleDefault();
-//     }
-//   });
-// })
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -38,26 +38,28 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
 .controller('CardsCtrl', function($scope, TDCardDelegate) {
   console.log('CARDS CTRL');
   var cardTypes = [
-    { image: 'img/max.jpg' },
-    { image: 'img/ben.png' },
-    { image: 'img/perry.jpg' },
+    { title: 'Max',
+      image: 'img/max.jpg' },
+    { title: 'Ben',
+      image: 'img/ben.png' },
+    { title: 'Perry',
+      image: 'img/perry.jpg' },
   ];
+
+  $scope.cards = Array.prototype.slice.call(cardTypes, 0);
 
   $scope.cardDestroyed = function(index) {
     $scope.cards.splice(index, 1);
   };
 
   $scope.addCard = function() {
-    var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+    var randomNumber = Math.floor(Math.random() * (cardTypes.length - 1 + 1)) + 1;
+    console.log(randomNumber);
+    var newCard = cardTypes[randomNumber];
     newCard.id = Math.random();
-    $scope.cards.unshift(angular.extend({}, newCard));
+    $scope.cards.push(angular.extend({}, newCard));
   }
 
-  $scope.cards = [];
-  for(var i = 0; i < 3; i++) $scope.addCard();
-})
-
-.controller('CardCtrl', function($scope, TDCardDelegate) {
   $scope.cardSwipedLeft = function(index) {
     console.log('LEFT SWIPE');
     $scope.addCard();
